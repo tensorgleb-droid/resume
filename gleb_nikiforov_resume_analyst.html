@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gleb Nikiforov — Business & System Analyst</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -94,12 +92,13 @@ body {
   letter-spacing:1.5px;
   color:#888;
   margin-bottom:10px;
+  text-transform: uppercase;
 }
 
 .about { color:#444; }
 
 /* JOBS */
-.job { margin-bottom:16px; }
+.job { margin-bottom:18px; }
 
 .job-header {
   display:flex;
@@ -118,7 +117,7 @@ body {
 .job-desc {
   font-size:12px;
   color:#555;
-  margin-bottom:4px;
+  margin-bottom:6px;
 }
 
 .job-ach-item {
@@ -126,12 +125,35 @@ body {
   color:#444;
   padding-left:12px;
   position:relative;
+  margin-bottom:2px;
 }
 .job-ach-item::before {
   content:"•";
   position:absolute;
   left:0;
   color:#999;
+}
+
+/* highlight badge */
+.badge {
+  display:inline-block;
+  font-size:10px;
+  font-weight:600;
+  padding:1px 5px;
+  border-radius:2px;
+  margin-right:4px;
+  vertical-align:middle;
+  letter-spacing:0.5px;
+}
+.badge-code {
+  background:#f0f4ff;
+  color:#3355cc;
+  border:1px solid #c5d0f0;
+}
+.badge-sql {
+  background:#f0fff4;
+  color:#1a7a3f;
+  border:1px solid #b0dfc0;
 }
 
 /* SKILLS */
@@ -146,6 +168,24 @@ body {
   padding:4px 8px;
   border:1px solid #ddd;
   background:#fafafa;
+}
+
+.skill-highlight {
+  font-size:11px;
+  padding:4px 8px;
+  border:1px solid #c5d0f0;
+  background:#f0f4ff;
+  color:#3355cc;
+  font-weight:600;
+}
+
+.skill-sql {
+  font-size:11px;
+  padding:4px 8px;
+  border:1px solid #b0dfc0;
+  background:#f0fff4;
+  color:#1a7a3f;
+  font-weight:600;
 }
 
 /* PRINT */
@@ -180,10 +220,10 @@ body {
 <div class="cv-header">
   <div class="cv-top">
     <div class="cv-name">Gleb Nikiforov</div>
-    <button class="pdf-btn" onclick="downloadPDF()">Download PDF</button>
+    <button class="pdf-btn" onclick="window.print()">Download PDF</button>
   </div>
 
-  <div class="cv-title">System Designer / Business & System Analyst</div>
+  <div class="cv-title">Technical Business &amp; System Analyst · E-commerce / Fintech / ERP</div>
 
   <div class="cv-contacts">
     <span>tensorgleb@gmail.com</span>
@@ -194,15 +234,15 @@ body {
 </div>
 
 <div class="stat-row">
-  <div class="stat"><div class="stat-n">10+</div><div class="stat-l">years exp</div></div>
+  <div class="stat"><div class="stat-n">10+</div><div class="stat-l">years experience</div></div>
   <div class="stat"><div class="stat-n">5</div><div class="stat-l">companies</div></div>
-  <div class="stat"><div class="stat-n">Fin / ERP</div><div class="stat-l">domains</div></div>
+  <div class="stat"><div class="stat-n">Fin / E-com / ERP</div><div class="stat-l">domains</div></div>
 </div>
 
 <div class="section">
   <div class="section-label">About</div>
   <p class="about">
-    Experienced in forming product vision, defining feature concepts, and coordinating cross-functional teams. Supports products through the full lifecycle — from ideation to post-release analysis. Worked on large user-facing products, ERP modules, fintech platforms, and high-load systems.
+    Technical BA with 10+ years across fintech, e-commerce, and ERP domains. Specialized in gap analysis on partially built systems, consolidating Jira backlogs, and producing structured Confluence documentation from scattered or implicit requirements. Strong SQL background used throughout career for data validation, process analysis, and integration verification. Comfortable acting as the bridge between Product, Engineering, and QA in distributed Agile teams. Experience with AI tools (Claude, ChatGPT) for analysis acceleration and documentation drafting.
   </p>
 </div>
 
@@ -212,17 +252,19 @@ body {
   <!-- CSSSR -->
   <div class="job">
     <div class="job-header">
-      <div class="job-title">Business & System Analyst</div>
+      <div class="job-title">Business &amp; System Analyst</div>
       <div class="job-period">May 2023 — present</div>
     </div>
     <div class="job-company">CSSSR · Belgrade (Remote)</div>
-    <div class="job-desc">Fintech solutions for large banking client (NDA)</div>
+    <div class="job-desc">Large-scale fintech platform for a major bank (NDA) — microfinance lending workflows, BPM automation, multi-system integrations</div>
     <div class="job-ach">
+      <div class="job-ach-item"><span class="badge badge-sql">SQL</span>Used SQL queries to validate data consistency across integration layers and identify discrepancies between services</div>
+      <div class="job-ach-item">Performed gap analysis between existing implementation and evolving requirements; maintained living Confluence specs</div>
+      <div class="job-ach-item">Consolidated and refined Jira user stories across multiple epics; reduced requirement ambiguity before each sprint</div>
+      <div class="job-ach-item">Produced user flows, sequence diagrams, and BPMN process models for complex multi-step workflows</div>
       <div class="job-ach-item">Increased application completion rate by 20% by redesigning onboarding flow and removing UX friction</div>
-      <div class="job-ach-item">Reduced processing time by 15% by identifying bottlenecks and optimizing workflows</div>
-      <div class="job-ach-item">Decreased data entry errors by implementing validation rules across input layers</div>
-      <div class="job-ach-item">Ensured regulatory compliance by aligning business, legal, and engineering requirements</div>
-      <div class="job-ach-item">Delivered releases with zero critical defects by leading UAT cycles</div>
+      <div class="job-ach-item">Delivered releases with zero critical defects by leading UAT cycles and coordinating cross-functional team of 13+</div>
+      <div class="job-ach-item">Leveraged AI tools (Claude, ChatGPT) to accelerate documentation drafting and requirement analysis</div>
     </div>
   </div>
 
@@ -233,12 +275,12 @@ body {
       <div class="job-period">Sep 2022 — Apr 2023</div>
     </div>
     <div class="job-company">Gabumas Ltd · Cyprus</div>
-    <div class="job-desc">Video hosting platform</div>
+    <div class="job-desc">Video hosting platform — content catalog management, metadata workflows, external integrations</div>
     <div class="job-ach">
-      <div class="job-ach-item">Launched video platform from scratch by defining architecture, APIs, and data models</div>
-      <div class="job-ach-item">Reduced requirement ambiguity by formalizing business inputs into structured specs</div>
-      <div class="job-ach-item">Accelerated delivery cycles via backlog refinement and scope alignment</div>
-      <div class="job-ach-item">Improved scalability through clean architectural decisions</div>
+      <div class="job-ach-item"><span class="badge badge-sql">SQL</span>Designed data models for catalog and metadata; validated content pipeline logic via SQL</div>
+      <div class="job-ach-item">Launched platform from scratch: defined architecture, API contracts, and integration specs with external services</div>
+      <div class="job-ach-item">Formalized business inputs into structured technical specs; reduced requirement ambiguity across the backlog</div>
+      <div class="job-ach-item">Accelerated delivery via backlog refinement and scope alignment with product and engineering</div>
     </div>
   </div>
 
@@ -249,12 +291,12 @@ body {
       <div class="job-period">Jun 2020 — Aug 2022</div>
     </div>
     <div class="job-company">Innovative People · Moscow</div>
-    <div class="job-desc">Bank factoring system</div>
+    <div class="job-desc">Bank factoring system — digital financing flows, multi-party workflows, ERP integrations</div>
     <div class="job-ach">
-      <div class="job-ach-item">Delivered core digital financing flow for application and tracking</div>
-      <div class="job-ach-item">Reduced risks by decomposing features into MVPs</div>
-      <div class="job-ach-item">Improved development speed via structured requirements</div>
-      <div class="job-ach-item">Ensured delivery by coordinating cross-functional teams</div>
+      <div class="job-ach-item"><span class="badge badge-sql">SQL</span>Wrote complex SQL queries for data analysis, process tracing, and pre-release validation</div>
+      <div class="job-ach-item">Delivered core digital financing flow covering application creation, status tracking, and approval routing</div>
+      <div class="job-ach-item">Decomposed features into MVPs with clear acceptance criteria; improved team velocity and reduced rework</div>
+      <div class="job-ach-item">Coordinated Product, Engineering, and QA in Agile sprints; acted as primary requirements owner</div>
     </div>
   </div>
 
@@ -265,12 +307,12 @@ body {
       <div class="job-period">Nov 2016 — Jun 2020</div>
     </div>
     <div class="job-company">TransContainer PJSC</div>
-    <div class="job-desc">E-commerce logistics platform</div>
+    <div class="job-desc">E-commerce logistics platform — digital catalog for container transportation, customer-facing order management</div>
     <div class="job-ach">
-      <div class="job-ach-item">Launched digital platform for container transportation</div>
-      <div class="job-ach-item">Improved operations via business process optimization</div>
-      <div class="job-ach-item">Reduced dev iterations via clear BRDs and prototypes</div>
-      <div class="job-ach-item">Enabled analytics via SQL insights</div>
+      <div class="job-ach-item"><span class="badge badge-sql">SQL</span>Built SQL-based analytics and reporting layer; enabled data-driven decisions for operations and product teams</div>
+      <div class="job-ach-item">Launched digital platform for container transportation with product catalog, pricing workflows, and order tracking</div>
+      <div class="job-ach-item">Optimized business processes end-to-end; reduced manual operations through workflow automation</div>
+      <div class="job-ach-item">Produced BRDs, wireframes, and process diagrams; reduced dev iterations and stakeholder misalignment</div>
     </div>
   </div>
 
@@ -281,11 +323,11 @@ body {
       <div class="job-period">Mar 2014 — Oct 2016</div>
     </div>
     <div class="job-company">Tensor LLC</div>
-    <div class="job-desc">Document management systems</div>
+    <div class="job-desc">Document management and reporting systems — automation, integrations, custom analytics</div>
     <div class="job-ach">
-      <div class="job-ach-item">Improved document workflows and processing efficiency</div>
-      <div class="job-ach-item">Aligned business and technical processes</div>
-      <div class="job-ach-item">Delivered integrations with client systems</div>
+      <div class="job-ach-item"><span class="badge badge-code">Python</span><span class="badge badge-code">C++</span>Developed automation scripts and data processing modules in Python and C++; built custom reporting pipelines</div>
+      <div class="job-ach-item">Implemented integrations with client systems; delivered end-to-end document workflow automation</div>
+      <div class="job-ach-item">Combined engineering and analytical roles — translated business requirements directly into working software</div>
     </div>
   </div>
 
@@ -294,24 +336,25 @@ body {
 <div class="section">
   <div class="section-label">Skills</div>
   <div class="skills-wrap">
+    <span class="skill-sql">SQL (complex queries)</span>
+    <span class="skill-highlight">Python</span>
+    <span class="skill-highlight">C++</span>
+    <span class="skill">Gap Analysis</span>
     <span class="skill">System Analysis</span>
     <span class="skill">Business Requirements</span>
-    <span class="skill">SQL</span>
+    <span class="skill">Jira / Confluence</span>
     <span class="skill">API Design</span>
-    <span class="skill">Kafka</span>
-    <span class="skill">REST</span>
+    <span class="skill">REST / Kafka</span>
     <span class="skill">UML / BPMN</span>
+    <span class="skill">Agile / Scrum</span>
+    <span class="skill">UAT</span>
     <span class="skill">Stakeholder Management</span>
+    <span class="skill">AI Tools (Claude, ChatGPT)</span>
+    <span class="skill">E-commerce / Fintech / ERP</span>
   </div>
 </div>
 
 </div>
-
-<script>
-function downloadPDF() {
-  window.print();
-}
-</script>
 
 </body>
 </html>
