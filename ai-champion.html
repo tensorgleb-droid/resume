@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Champion</title>
+<title>AI Manager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
@@ -81,6 +81,10 @@ svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .pilot strong{font:700 15px var(--f-display)}
 .metric{display:flex;align-items:center;gap:8px;color:var(--muted)}
 .metric i{font-style:normal;font:500 11px var(--f-mono);color:var(--accent);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.rules{margin:0;padding-left:18px;display:grid;gap:2px;font-size:12.5px}
+.rules li::marker{font-family:var(--f-mono);color:var(--accent)}
+.note{margin:2px 0 0;font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.note code{font:500 12.5px var(--f-mono);color:var(--accent)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
 </head>
@@ -90,8 +94,8 @@ svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
   <header>
     <div>
       <div class="eyebrow">Предложение · единая точка входа для AI-инициатив</div>
-      <h1>Ксения Никифорова — <span>AI&nbsp;Champion</span></h1>
-      <p class="lead">Все идеи по ИИ приходят в одно место, лучшие быстро доходят до реализации, а запросы с чувствительными данными проверяются до старта.</p>
+      <h1>Ксения Никифорова — <span>AI&nbsp;Manager</span></h1>
+      <p class="lead">Все идеи по ИИ приходят в одно место, лучшие быстро доходят до реализации, а запросы с чувствительными данными проверяются до старта. Это неформальная роль.</p>
     </div>
     <div class="load"><b>10–20%</b><small>времени поверх<br>основной работы</small></div>
   </header>
@@ -111,14 +115,14 @@ svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
           <div class="cell"><button class="node" data-i="0" type="button"><span class="k">форма Slack</span>Заполняет шаблон запроса</button></div>
           <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
 
-          <div class="lanel">AI Champion<small>Ксения</small></div>
+          <div class="lanel">AI Manager<small>Ксения</small></div>
           <div class="cell alt"></div>
           <div class="cell alt"><button class="node" data-i="1" type="button"><span class="k">каждую неделю</span>Разбирает входящие, отбирает лучшие</button></div>
           <div class="cell alt"></div>
           <div class="cell alt"><button class="node" data-i="3" type="button"><span class="k">👀 ✅ 🅿️</span>Ставит статус на карточке</button></div>
           <div class="cell alt"></div>
 
-          <div class="lanel">Синк, 1 час<small>Ксения, Наталья Никитина, Алексей Ермолаев</small></div>
+          <div class="lanel">Синк, 1 час<small>еженедельно со стейкхолдерами</small></div>
           <div class="cell"></div><div class="cell"></div>
           <div class="cell"><button class="node" data-i="2" type="button"><span class="k">решение</span>Оценка эффекта, сложности, рисков</button></div>
           <div class="cell"></div><div class="cell"></div>
@@ -141,11 +145,20 @@ svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 
     <aside class="side">
       <section class="panel">
-        <div class="ph"><h2>Каналы в Slack</h2></div>
+        <div class="ph"><h2>Новый канал в Slack</h2></div>
         <div class="ch">
           <div class="chan"><code>#ai-requests</code><em>все, через форму</em><span>Только запросы и статусы, строго по шаблону</span></div>
-          <div class="chan"><code>#ai-community</code><em>все</em><span>Находки, промпты, вопросы «а можно ли…»</span></div>
-          <div class="chan"><code>#ai-announcements</code><em>позже · только Ксения</em><span>Что запустили, новые правила, дайджест</span></div>
+          <div>
+            <div class="eyebrow" style="margin-bottom:4px">Правила оформления запроса</div>
+            <ol class="rules">
+              <li>Кто просит, какая команда</li>
+              <li>Какую задачу решаем и как она делается сейчас</li>
+              <li>Как часто и сколько времени занимает (часов в неделю)</li>
+              <li>Какие данные задействованы: клиентские, персональные, финансовые</li>
+              <li>Желаемый результат и срочность</li>
+            </ol>
+          </div>
+          <p class="note">Всё, что запустили и внедрили, публикуется в канале <code>#general</code>.</p>
         </div>
       </section>
       <section class="panel">
@@ -153,11 +166,11 @@ svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
         <div class="card">
           <div class="who"><div class="av">AI</div><b>Новый запрос</b><span class="eyebrow">пример</span></div>
           <dl>
-            <dt>Кто</dt><dd>Команда продаж</dd>
-            <dt>Задача</dt><dd>Сводка по звонкам, сейчас вручную</dd>
+            <dt>Кто</dt><dd>Тимлид команды N</dd>
+            <dt>Задача</dt><dd>Исправление ошибок, поступающих от драфтера</dd>
             <dt>Время</dt><dd>~4 часа в неделю</dd>
-            <dt>Данные</dt><dd>Клиентские — нужна проверка</dd>
-            <dt>Срочно</dt><dd>В этом квартале</dd>
+            <dt>Данные</dt><dd>Персональных данных нет</dd>
+            <dt>Срочность</dt><dd>Высокая</dd>
           </dl>
           <div class="reacts" role="group" aria-label="Статус запроса">
             <button class="react r1" type="button" aria-pressed="true" data-s="0">👀 на разборе</button>
@@ -165,7 +178,7 @@ svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
             <button class="react r3" type="button" aria-pressed="false" data-s="2">🅿️ отложено</button>
           </div>
         </div>
-        <p class="hint">Нажмите на статус, чтобы увидеть, как его меняет AI Champion.</p>
+        <p class="hint">Нажмите на статус, чтобы увидеть, как его меняет AI Manager.</p>
       </section>
     </aside>
   </div>
@@ -183,10 +196,10 @@ svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 const steps=[
  {n:'1',t:'Сотрудник подаёт запрос',p:'Форма в Slack Workflow Builder: кто просит, какую задачу решаем и как сейчас, сколько часов в неделю занимает, какие данные задействованы, желаемый результат и срочность. Карточка сама появляется в #ai-requests.'},
  {n:'2',t:'Ксения разбирает входящие',p:'Простые вопросы закрывает сразу: подсказывает, как решить задачу доступными инструментами. Лучшие идеи отбирает на еженедельный синк.'},
- {n:'3',t:'Еженедельный синк, 1 час',p:'Ксения, Наталья Никитина и Алексей Ермолаев. Ксения представляет лучшие идеи, по каждой обсуждаются эффект, сложность и риски по данным.'},
+ {n:'3',t:'Еженедельный синк, 1 час',p:'Еженедельная встреча со стейкхолдерами. Ксения представляет лучшие идеи, по каждой обсуждаются эффект, сложность и риски по данным.'},
  {n:'4',t:'Идее ставится статус',p:'По итогам синка Ксения отмечает карточку: 👀 на разборе, ✅ взято в работу или 🅿️ отложено. Автор всегда видит, что с его идеей.'},
  {n:'5',t:'Нужна разработка — к разработчикам',p:'Если требуется разработка или интеграция, идея идёт на согласование к разработчикам вместе с оценкой эффекта.'},
- {n:'5',t:'Хватает готовых инструментов — делаем сами',p:'Если задачу решают доступные AI-инструменты, её реализуют AI-энтузиасты самостоятельно и делятся результатом в #ai-community.'}
+ {n:'5',t:'Хватает готовых инструментов — делаем сами',p:'Если задачу решают доступные AI-инструменты, её реализуют AI-энтузиасты самостоятельно и публикуют результат в #general.'}
 ];
 const edges=[[0,1],[1,2],[2,3],[3,4,'разработка'],[3,5,'сами']];
 const bp=document.getElementById('bpmn'),svg=document.getElementById('wires');
