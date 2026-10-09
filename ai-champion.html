@@ -5,133 +5,163 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI Manager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
-/* Layout: one screen — role header, BPMN-style swimlane process on the left, Slack setup on the right, pilot strip at the foot */
+/* Layout: DocuSketch-style one-pager — warm paper ground with a lemon glow at the top, mono display title, white cards; swimlane process left, Slack setup right, pilot strip at the foot */
 :root{
-  --bg:#F3F5F8; --surface:#FFFFFF; --ink:#18202E; --muted:#5B6578; --line:#D5DBE5;
-  --accent:#3B4FD9; --accent-soft:#E6E9FC; --warn:#B9770E; --good:#1F8A5B; --park:#7A8296;
-  --lane:#EBEEF4;
-  --f-display:"Unbounded",system-ui,sans-serif; --f-body:"Golos Text",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,monospace;
+  --bg:#F4F3EA; --surface:#FFFFFF; --ink:#000000; --ink-2:#1A1905; --muted:#6B6852;
+  --line:#E2E0D3; --line-2:#C0BC90; --accent:#E5DF00; --on-accent:#1A1905; --lane:#FAF9F3; --glow:#EFEA7A;
+  --good:#3F7D3A; --warn:#9A6B00; --park:#7B7862;
+  --f-display:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-label:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#11151D; --surface:#181E29; --ink:#E6EAF2; --muted:#98A2B5; --line:#2C3443;
-  --accent:#8C9BFF; --accent-soft:#252C52; --warn:#E3A33B; --good:#4CC28B; --park:#8D95A8; --lane:#1C2330; color-scheme:dark}}
+  --bg:#12120C; --surface:#1C1C15; --ink:#F4F3EA; --ink-2:#F4F3EA; --muted:#A9A68E;
+  --line:#2E2D22; --line-2:#5A5740; --lane:#17170F; --glow:#3A3810; --good:#7CC474; --warn:#E3B53B; --park:#A3A08A; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#11151D; --surface:#181E29; --ink:#E6EAF2; --muted:#98A2B5; --line:#2C3443;
-  --accent:#8C9BFF; --accent-soft:#252C52; --warn:#E3A33B; --good:#4CC28B; --park:#8D95A8; --lane:#1C2330; color-scheme:dark}
+  --bg:#12120C; --surface:#1C1C15; --ink:#F4F3EA; --ink-2:#F4F3EA; --muted:#A9A68E;
+  --line:#2E2D22; --line-2:#5A5740; --lane:#17170F; --glow:#3A3810; --good:#7CC474; --warn:#E3B53B; --park:#A3A08A; color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--f-body);padding-inline:20px;padding-block:18px}
-.wrap{max-width:1240px;margin:0 auto;display:grid;gap:14px}
-header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
-.eyebrow{font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-h1{font:700 clamp(22px,3vw,32px)/1.1 var(--f-display);margin:4px 0 6px;text-wrap:balance}
-h1 span{color:var(--accent)}
-.lead{margin:0;color:var(--muted);max-width:62ch}
-.load{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
-.load b{font:700 22px var(--f-display);color:var(--accent)}
-.load small{color:var(--muted);line-height:1.3}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg) linear-gradient(180deg,var(--glow) 0,var(--bg) 260px) no-repeat;color:var(--ink);font:14px/1.45 var(--f-body);padding-inline:20px;padding-block:16px}
+.wrap{max-width:1240px;margin:0 auto;display:grid;gap:14px;position:relative}
+.cross{position:absolute;width:13px;height:13px;pointer-events:none}
+.cross::before,.cross::after{content:"";position:absolute;background:var(--ink-2);opacity:.55}
+.cross::before{left:6px;top:0;width:1px;height:13px}
+.cross::after{top:6px;left:0;height:1px;width:13px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--surface);border-radius:12px;padding:8px 10px 8px 16px;border:1px solid var(--line)}
+.brand{font:600 14px var(--f-body);letter-spacing:-.3px}
+.brand sup{font-size:9px}
+.lang{display:flex;gap:4px;background:var(--bg);border-radius:8px;padding:3px}
+.lang button{border:0;background:transparent;color:var(--ink-2);font:600 12px var(--f-label);letter-spacing:.06em;padding:5px 12px;border-radius:6px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;padding:8px 2px 2px}
+.eyebrow{font:500 11.5px var(--f-label);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:500 clamp(22px,3.4vw,38px)/1.08 var(--f-display);letter-spacing:-1px;text-transform:uppercase;margin:6px 0 8px;text-wrap:balance}
+h1 .hl{background:var(--accent);color:var(--on-accent);padding:0 .18em;border-radius:6px;white-space:nowrap}
+.lead{margin:0;color:var(--ink-2);max-width:66ch;font-size:15px}
+.load{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 16px}
+.load b{font:600 24px var(--f-display);letter-spacing:-1px}
+.load small{color:var(--muted);line-height:1.3;font-size:12.5px}
 .grid{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);gap:14px}
 @media (max-width:900px){.grid{grid-template-columns:1fr}}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
-.panel h2{font:600 13px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+.panel h2{font:600 12.5px var(--f-label);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin:0}
 .ph{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
-button{font:inherit;cursor:pointer}
-.play{background:var(--accent);color:var(--surface);border:0;border-radius:8px;padding:6px 12px;font-weight:600;font-size:13px}
-.play:focus-visible,.node:focus-visible,.react:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font:inherit}
+.play{background:var(--accent);color:var(--on-accent);border:0;border-radius:8px;padding:7px 14px;font:500 13px var(--f-body);cursor:pointer}
+.play:hover{filter:brightness(.96)}
+.play:focus-visible,.node:focus-visible,.react:focus-visible,.lang button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .scroller{overflow-x:auto}
-.bpmn{position:relative;display:grid;grid-template-columns:118px repeat(5,minmax(104px,1fr));min-width:690px}
-.colh{font:500 11px var(--f-mono);color:var(--muted);text-align:center;padding:0 4px 6px}
-.lanel{display:flex;flex-direction:column;justify-content:center;padding:8px 10px;background:var(--lane);border-top:1px solid var(--line);font-weight:600;font-size:12.5px;line-height:1.25}
-.lanel small{font-weight:400;color:var(--muted);font-size:11.5px}
+.bpmn{position:relative;display:grid;grid-template-columns:124px repeat(5,minmax(104px,1fr));min-width:700px}
+.colh{font:500 11.5px var(--f-label);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:center;padding:0 4px 6px}
+.lanel{display:flex;flex-direction:column;justify-content:center;padding:8px 10px;background:var(--lane);border-top:1px solid var(--line);font:600 12.5px/1.25 var(--f-label)}
+.lanel small{font:400 11.5px/1.3 var(--f-body);color:var(--muted)}
 .cell{border-top:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:10px 8px;min-height:76px}
-.cell.alt{background:color-mix(in srgb,var(--lane) 45%,transparent)}
-.node{position:relative;z-index:2;background:var(--surface);border:1.25px solid var(--line);border-radius:8px;padding:7px 9px;font-size:12.5px;line-height:1.3;text-align:left;color:var(--ink);transition:border-color .2s,background .2s,transform .2s}
-.node:hover{border-color:var(--accent)}
-.node.on{border-color:var(--accent);background:var(--accent-soft);transform:translateY(-1px);border-width:2px}
-.node .k{display:block;font:500 10.5px var(--f-mono);color:var(--muted);margin-bottom:2px}
+.cell.alt{background:var(--lane)}
+.node{position:relative;z-index:2;background:var(--surface);border:1px solid var(--line-2);border-radius:8px;padding:7px 9px;font-size:12.5px;line-height:1.3;text-align:left;color:var(--ink);cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+.node:hover{border-color:var(--ink-2)}
+.node.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);transform:translateY(-1px)}
+.node .k{display:block;font:500 10.5px var(--f-label);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.node.on .k{color:var(--on-accent);opacity:.7}
 svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible}
-.wires path{fill:none;stroke:var(--line);stroke-width:1.5;transition:stroke .2s}
-.wires path.on{stroke:var(--accent);stroke-width:2}
-.wires text{font:11px var(--f-body);fill:var(--muted)}
-.detail{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:baseline;min-height:70px}
-.detail .step{font:700 24px var(--f-display);color:var(--accent);grid-row:span 2}
-.detail h3{margin:0;font-size:15px}
-.detail p{margin:0;color:var(--muted);max-width:75ch}
+.wires .w{fill:none;stroke:var(--line-2);stroke-width:1.5;transition:stroke .2s}
+.wires .w.on{stroke:var(--ink);stroke-width:2}
+.wires .mk{fill:var(--line-2)}
+.wires .mk.on{fill:var(--ink)}
+.wires text{font:500 10.5px var(--f-label);letter-spacing:.04em;text-transform:uppercase;fill:var(--muted)}
+.detail{margin-top:12px;border-top:1px dashed var(--line-2);padding-top:10px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:baseline;min-height:72px}
+.detail .step{font:600 28px var(--f-display);grid-row:span 2;background:var(--accent);color:var(--on-accent);border-radius:8px;padding:0 10px;line-height:1.3}
+.detail h3{margin:0;font:600 15px var(--f-body);letter-spacing:-.2px}
+.detail p{margin:0;color:var(--muted);max-width:78ch}
 .side{display:grid;gap:14px;align-content:start}
-.ch{display:grid;gap:8px}
-.chan{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:baseline}
-.chan code{font:500 12.5px var(--f-mono);color:var(--accent)}
-.chan span{color:var(--muted);font-size:12.5px;grid-column:2}
-.chan em{font-style:normal;font-size:11px;color:var(--muted);font-family:var(--f-mono)}
-.card{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;background:var(--bg)}
+.ch{display:grid;gap:10px}
+.chan{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline}
+.chan code,.note code{font:600 13.5px var(--f-display);color:var(--ink);background:var(--bg);border-radius:6px;padding:1px 6px}
+.chan em{font:500 11px var(--f-label);font-style:normal;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.chan span{flex-basis:100%;color:var(--muted);font-size:12.5px}
+.rules{margin:4px 0 0;padding-left:20px;display:grid;gap:2px;font-size:12.5px}
+.rules li::marker{font:600 12px var(--f-display);color:var(--ink-2)}
+.note{margin:0;font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line-2);padding-top:8px}
+.note code{font-size:12.5px}
+.card{border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:12.5px;background:var(--lane)}
 .card .who{display:flex;gap:8px;align-items:center;margin-bottom:6px}
-.av{width:22px;height:22px;border-radius:6px;background:var(--accent);color:var(--surface);display:grid;place-items:center;font:700 11px var(--f-display)}
+.av{width:22px;height:22px;border-radius:6px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font:600 10.5px var(--f-display)}
+.tag{font:500 10.5px var(--f-label);letter-spacing:.06em;text-transform:uppercase;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--muted)}
 .card dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0}
-.card dt{color:var(--muted);font-family:var(--f-mono);font-size:11px;padding-top:1px}
+.card dt{color:var(--muted);font:500 11px var(--f-label);letter-spacing:.05em;text-transform:uppercase;padding-top:1px}
 .card dd{margin:0}
 .reacts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.react{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:3px 10px;font-size:12px}
+.react{border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:999px;padding:3px 10px;font-size:12px;cursor:pointer}
 .react[aria-pressed="true"]{border-color:currentColor;font-weight:600}
 .react.r1[aria-pressed="true"]{color:var(--warn)}
 .react.r2[aria-pressed="true"]{color:var(--good)}
 .react.r3[aria-pressed="true"]{color:var(--park)}
 .hint{font-size:11.5px;color:var(--muted);margin:6px 0 0}
 .pilot{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px}
-.pilot strong{font:700 15px var(--f-display)}
-.metric{display:flex;align-items:center;gap:8px;color:var(--muted)}
-.metric i{font-style:normal;font:500 11px var(--f-mono);color:var(--accent);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
-.rules{margin:0;padding-left:18px;display:grid;gap:2px;font-size:12.5px}
-.rules li::marker{font-family:var(--f-mono);color:var(--accent)}
-.note{margin:2px 0 0;font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
-.note code{font:500 12.5px var(--f-mono);color:var(--accent)}
+.pilot strong{font:500 15px var(--f-display);text-transform:uppercase;letter-spacing:-.3px}
+.metric{display:flex;align-items:center;gap:8px;color:var(--ink-2)}
+.metric i{font:600 11px var(--f-display);font-style:normal;background:var(--accent);color:var(--on-accent);border-radius:6px;padding:1px 6px}
+.metric.last{color:var(--muted)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-
 <div class="wrap">
+  <span class="cross" style="left:-7px;top:62px" aria-hidden="true"></span>
+  <span class="cross" style="right:-7px;top:62px" aria-hidden="true"></span>
+
+  <div class="topbar">
+    <span class="brand">AI Manager<sup>°</sup></span>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="l-ru" data-l="ru" aria-pressed="true">RU</button>
+      <button type="button" id="l-en" data-l="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+
   <header>
     <div>
-      <div class="eyebrow">Предложение · единая точка входа для AI-инициатив</div>
-      <h1>Ксения Никифорова — <span>AI&nbsp;Manager</span></h1>
-      <p class="lead">Все идеи по ИИ приходят в одно место, лучшие быстро доходят до реализации, а запросы с чувствительными данными проверяются до старта. Это неформальная роль.</p>
+      <div class="eyebrow" data-i="eyebrow"></div>
+      <h1><span data-i="name"></span> — <span class="hl">AI&nbsp;Manager</span></h1>
+      <p class="lead" data-i="lead"></p>
     </div>
-    <div class="load"><b>10–20%</b><small>времени поверх<br>основной работы</small></div>
+    <div class="load"><b>10–20%</b><small data-i="load"></small></div>
   </header>
 
   <div class="grid">
     <section class="panel" aria-labelledby="proc-h">
       <div class="ph">
-        <h2 id="proc-h">Бизнес-процесс и роли</h2>
-        <button class="play" id="play" type="button">▶ Проиграть процесс</button>
+        <h2 id="proc-h" data-i="proc"></h2>
+        <button class="play" id="play" type="button"></button>
       </div>
       <div class="scroller">
         <div class="bpmn" id="bpmn">
           <div></div>
-          <div class="colh">1 · Запрос</div><div class="colh">2 · Разбор</div><div class="colh">3 · Синк</div><div class="colh">4 · Статус</div><div class="colh">5 · Реализация</div>
+          <div class="colh" data-i="c1"></div><div class="colh" data-i="c2"></div><div class="colh" data-i="c3"></div><div class="colh" data-i="c4"></div><div class="colh" data-i="c5"></div>
 
-          <div class="lanel">Сотрудник<small>любая команда</small></div>
-          <div class="cell"><button class="node" data-i="0" type="button"><span class="k">форма Slack</span>Заполняет шаблон запроса</button></div>
+          <div class="lanel"><span data-i="lane1"></span><small data-i="lane1s"></small></div>
+          <div class="cell"><button class="node" data-n="0" type="button"><span class="k" data-i="k0"></span><span data-i="n0"></span></button></div>
           <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
 
-          <div class="lanel">AI Manager<small>Ксения</small></div>
+          <div class="lanel">AI Manager<small data-i="lane2s"></small></div>
           <div class="cell alt"></div>
-          <div class="cell alt"><button class="node" data-i="1" type="button"><span class="k">каждую неделю</span>Разбирает входящие, отбирает лучшие</button></div>
+          <div class="cell alt"><button class="node" data-n="1" type="button"><span class="k" data-i="k1"></span><span data-i="n1"></span></button></div>
           <div class="cell alt"></div>
-          <div class="cell alt"><button class="node" data-i="3" type="button"><span class="k">👀 ✅ 🅿️</span>Ставит статус на карточке</button></div>
+          <div class="cell alt"><button class="node" data-n="3" type="button"><span class="k">👀 ✅ 🅿️</span><span data-i="n3"></span></button></div>
           <div class="cell alt"></div>
 
-          <div class="lanel">Синк, 1 час<small>еженедельно со стейкхолдерами</small></div>
+          <div class="lanel"><span data-i="lane3"></span><small data-i="lane3s"></small></div>
           <div class="cell"></div><div class="cell"></div>
-          <div class="cell"><button class="node" data-i="2" type="button"><span class="k">решение</span>Оценка эффекта, сложности, рисков</button></div>
+          <div class="cell"><button class="node" data-n="2" type="button"><span class="k" data-i="k2"></span><span data-i="n2"></span></button></div>
           <div class="cell"></div><div class="cell"></div>
 
-          <div class="lanel">Исполнители</div>
+          <div class="lanel"><span data-i="lane4"></span></div>
           <div class="cell alt"></div><div class="cell alt"></div><div class="cell alt"></div><div class="cell alt"></div>
           <div class="cell alt">
-            <button class="node" data-i="4" type="button"><span class="k">нужна разработка</span>Согласование с разработчиками</button>
-            <button class="node" data-i="5" type="button"><span class="k">готовые инструменты</span>AI-энтузиасты делают сами</button>
+            <button class="node" data-n="4" type="button"><span class="k" data-i="k4"></span><span data-i="n4"></span></button>
+            <button class="node" data-n="5" type="button"><span class="k" data-i="k5"></span><span data-i="n5"></span></button>
           </div>
           <svg class="wires" id="wires" aria-hidden="true"></svg>
         </div>
@@ -145,102 +175,149 @@ svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 
     <aside class="side">
       <section class="panel">
-        <div class="ph"><h2>Новый канал в Slack</h2></div>
+        <div class="ph"><h2 data-i="chH"></h2></div>
         <div class="ch">
-          <div class="chan"><code>#ai-requests</code><em>все, через форму</em><span>Только запросы и статусы, строго по шаблону</span></div>
+          <div class="chan"><code>#ai-requests</code><em data-i="chWho"></em><span data-i="chWhat"></span></div>
           <div>
-            <div class="eyebrow" style="margin-bottom:4px">Правила оформления запроса</div>
+            <div class="eyebrow" data-i="rulesH"></div>
             <ol class="rules">
-              <li>Кто просит, какая команда</li>
-              <li>Какую задачу решаем и как она делается сейчас</li>
-              <li>Как часто и сколько времени занимает (часов в неделю)</li>
-              <li>Какие данные задействованы: клиентские, персональные, финансовые</li>
-              <li>Желаемый результат и срочность</li>
+              <li data-i="r1"></li><li data-i="r2"></li><li data-i="r3"></li><li data-i="r4"></li><li data-i="r5"></li>
             </ol>
           </div>
-          <p class="note">Всё, что запустили и внедрили, публикуется в канале <code>#general</code>.</p>
+          <p class="note"><span data-i="noteA"></span> <code>#general</code>.</p>
         </div>
       </section>
       <section class="panel">
-        <div class="ph"><h2>Карточка в #ai-requests</h2></div>
+        <div class="ph"><h2><span data-i="cardH"></span> #ai-requests</h2></div>
         <div class="card">
-          <div class="who"><div class="av">AI</div><b>Новый запрос</b><span class="eyebrow">пример</span></div>
+          <div class="who"><div class="av">AI</div><b data-i="newReq"></b><span class="tag" data-i="example"></span></div>
           <dl>
-            <dt>Кто</dt><dd>Тимлид команды N</dd>
-            <dt>Задача</dt><dd>Исправление ошибок, поступающих от драфтера</dd>
-            <dt>Время</dt><dd>~4 часа в неделю</dd>
-            <dt>Данные</dt><dd>Персональных данных нет</dd>
-            <dt>Срочность</dt><dd>Высокая</dd>
+            <dt data-i="dWho"></dt><dd data-i="vWho"></dd>
+            <dt data-i="dTask"></dt><dd data-i="vTask"></dd>
+            <dt data-i="dTime"></dt><dd data-i="vTime"></dd>
+            <dt data-i="dData"></dt><dd data-i="vData"></dd>
+            <dt data-i="dUrg"></dt><dd data-i="vUrg"></dd>
           </dl>
-          <div class="reacts" role="group" aria-label="Статус запроса">
-            <button class="react r1" type="button" aria-pressed="true" data-s="0">👀 на разборе</button>
-            <button class="react r2" type="button" aria-pressed="false" data-s="1">✅ взято</button>
-            <button class="react r3" type="button" aria-pressed="false" data-s="2">🅿️ отложено</button>
+          <div class="reacts" role="group" aria-label="Status">
+            <button class="react r1" type="button" aria-pressed="true">👀 <span data-i="s1"></span></button>
+            <button class="react r2" type="button" aria-pressed="false">✅ <span data-i="s2"></span></button>
+            <button class="react r3" type="button" aria-pressed="false">🅿️ <span data-i="s3"></span></button>
           </div>
         </div>
-        <p class="hint">Нажмите на статус, чтобы увидеть, как его меняет AI Manager.</p>
+        <p class="hint" data-i="hint"></p>
       </section>
     </aside>
   </div>
 
   <section class="panel pilot">
-    <strong>Пилот на 3 месяца</strong>
-    <span class="metric"><i>01</i>сколько пришло запросов</span>
-    <span class="metric"><i>02</i>сколько идей внедрено</span>
-    <span class="metric"><i>03</i>сколько часов в неделю экономим</span>
-    <span class="metric">Есть результат — роль закрепляется и расширяется</span>
+    <strong data-i="pilot"></strong>
+    <span class="metric"><i>01</i><span data-i="m1"></span></span>
+    <span class="metric"><i>02</i><span data-i="m2"></span></span>
+    <span class="metric"><i>03</i><span data-i="m3"></span></span>
+    <span class="metric last" data-i="m4"></span>
   </section>
 </div>
 
 <script>
-const steps=[
- {n:'1',t:'Сотрудник подаёт запрос',p:'Форма в Slack Workflow Builder: кто просит, какую задачу решаем и как сейчас, сколько часов в неделю занимает, какие данные задействованы, желаемый результат и срочность. Карточка сама появляется в #ai-requests.'},
- {n:'2',t:'Ксения разбирает входящие',p:'Простые вопросы закрывает сразу: подсказывает, как решить задачу доступными инструментами. Лучшие идеи отбирает на еженедельный синк.'},
- {n:'3',t:'Еженедельный синк, 1 час',p:'Еженедельная встреча со стейкхолдерами. Ксения представляет лучшие идеи, по каждой обсуждаются эффект, сложность и риски по данным.'},
- {n:'4',t:'Идее ставится статус',p:'По итогам синка Ксения отмечает карточку: 👀 на разборе, ✅ взято в работу или 🅿️ отложено. Автор всегда видит, что с его идеей.'},
- {n:'5',t:'Нужна разработка — к разработчикам',p:'Если требуется разработка или интеграция, идея идёт на согласование к разработчикам вместе с оценкой эффекта.'},
- {n:'5',t:'Хватает готовых инструментов — делаем сами',p:'Если задачу решают доступные AI-инструменты, её реализуют AI-энтузиасты самостоятельно и публикуют результат в #general.'}
-];
-const edges=[[0,1],[1,2],[2,3],[3,4,'разработка'],[3,5,'сами']];
-const bp=document.getElementById('bpmn'),svg=document.getElementById('wires');
-const nodes=[...document.querySelectorAll('.node')].sort((a,b)=>a.dataset.i-b.dataset.i);
+const T={
+ ru:{
+  eyebrow:'Предложение · единая точка входа для AI-инициатив',name:'Ксения Никифорова',
+  lead:'Все идеи по ИИ приходят в одно место, лучшие быстро доходят до реализации, а запросы с чувствительными данными проверяются до старта. Это неформальная роль.',
+  load:'времени поверх основной работы',proc:'Бизнес-процесс и роли',play:'▶ Проиграть процесс',stop:'■ Стоп',
+  c1:'1 · Запрос',c2:'2 · Разбор',c3:'3 · Синк',c4:'4 · Статус',c5:'5 · Реализация',
+  lane1:'Сотрудник',lane1s:'любая команда',lane2s:'Ксения',lane3:'Синк, 1 час',lane3s:'еженедельно со стейкхолдерами',lane4:'Исполнители',
+  k0:'форма Slack',n0:'Заполняет шаблон запроса',k1:'каждую неделю',n1:'Разбирает входящие, отбирает лучшие',k2:'решение',n2:'Оценка эффекта, сложности, рисков',n3:'Ставит статус на карточке',
+  k4:'нужна разработка',n4:'Согласование с разработчиками',k5:'готовые инструменты',n5:'AI-энтузиасты делают сами',
+  e1:'разработка',e2:'сами',
+  chH:'Новый канал в Slack',chWho:'все, через форму',chWhat:'Только запросы и статусы, строго по шаблону',rulesH:'Правила оформления запроса',
+  r1:'Кто просит, какая команда',r2:'Какую задачу решаем и как она делается сейчас',r3:'Как часто и сколько времени занимает (часов в неделю)',r4:'Какие данные задействованы: клиентские, персональные, финансовые',r5:'Желаемый результат и срочность',
+  noteA:'Всё, что запустили и внедрили, публикуется в канале',
+  cardH:'Карточка в',newReq:'Новый запрос',example:'пример',dWho:'Кто',dTask:'Задача',dTime:'Время',dData:'Данные',dUrg:'Срочность',
+  vWho:'Тимлид команды N',vTask:'Исправление ошибок, поступающих от драфтера',vTime:'~4 часа в неделю',vData:'Персональных данных нет',vUrg:'Высокая',
+  s1:'на разборе',s2:'взято',s3:'отложено',hint:'Нажмите на статус, чтобы увидеть, как его меняет AI Manager.',
+  pilot:'Пилот на 3 месяца',m1:'сколько пришло запросов',m2:'сколько идей внедрено',m3:'сколько часов в неделю экономим',m4:'Есть результат — роль закрепляется и расширяется',
+  steps:[
+   ['1','Сотрудник подаёт запрос','Форма в Slack Workflow Builder: кто просит, какую задачу решаем и как сейчас, сколько часов в неделю занимает, какие данные задействованы, желаемый результат и срочность. Карточка сама появляется в #ai-requests.'],
+   ['2','Ксения разбирает входящие','Простые вопросы закрывает сразу: подсказывает, как решить задачу доступными инструментами. Лучшие идеи отбирает на еженедельный синк.'],
+   ['3','Еженедельный синк, 1 час','Еженедельная встреча со стейкхолдерами. Ксения представляет лучшие идеи, по каждой обсуждаются эффект, сложность и риски по данным.'],
+   ['4','Идее ставится статус','По итогам синка Ксения отмечает карточку: 👀 на разборе, ✅ взято в работу или 🅿️ отложено. Автор всегда видит, что с его идеей.'],
+   ['5','Нужна разработка — к разработчикам','Если требуется разработка или интеграция, идея идёт на согласование к разработчикам вместе с оценкой эффекта.'],
+   ['5','Хватает готовых инструментов — делаем сами','Если задачу решают доступные AI-инструменты, её реализуют AI-энтузиасты самостоятельно и публикуют результат в #general.']
+  ]},
+ en:{
+  eyebrow:'Proposal · one entry point for AI initiatives',name:'Ksenia Nikiforova',
+  lead:'Every AI idea comes to one place, the best ones reach delivery fast, and requests involving sensitive data are checked before work starts. This is an informal role.',
+  load:'of time, on top of the main job',proc:'Business process and roles',play:'▶ Play the process',stop:'■ Stop',
+  c1:'1 · Request',c2:'2 · Review',c3:'3 · Sync',c4:'4 · Status',c5:'5 · Delivery',
+  lane1:'Employee',lane1s:'any team',lane2s:'Ksenia',lane3:'Sync, 1 hour',lane3s:'weekly with stakeholders',lane4:'Delivery',
+  k0:'Slack form',n0:'Fills in the request template',k1:'weekly',n1:'Reviews incoming, picks the best',k2:'decision',n2:'Assesses impact, effort, risks',n3:'Sets the status on the card',
+  k4:'needs development',n4:'Approval with developers',k5:'existing tools',n5:'AI enthusiasts build it themselves',
+  e1:'dev',e2:'in-house',
+  chH:'New Slack channel',chWho:'everyone, via the form',chWhat:'Requests and statuses only, strictly by template',rulesH:'How to write a request',
+  r1:'Who is asking, which team',r2:'What task we solve and how it is done today',r3:'How often and how long it takes (hours per week)',r4:'What data is involved: client, personal, financial',r5:'Expected result and urgency',
+  noteA:'Everything launched and adopted is posted in',
+  cardH:'Card in',newReq:'New request',example:'example',dWho:'Who',dTask:'Task',dTime:'Time',dData:'Data',dUrg:'Urgency',
+  vWho:'Team lead, Team N',vTask:'Fixing errors coming from the drafter',vTime:'~4 hours a week',vData:'No personal data',vUrg:'High',
+  s1:'in review',s2:'taken',s3:'parked',hint:'Click a status to see how the AI Manager changes it.',
+  pilot:'3-month pilot',m1:'requests received',m2:'ideas implemented',m3:'hours saved per week',m4:'If it works, the role becomes permanent and grows',
+  steps:[
+   ['1','An employee submits a request','A Slack Workflow Builder form: who is asking, what task we solve and how it is done today, hours per week, what data is involved, expected result and urgency. The card appears in #ai-requests automatically.'],
+   ['2','Ksenia reviews incoming requests','Simple questions get an answer right away: how to solve the task with tools we already have. The best ideas go to the weekly sync.'],
+   ['3','Weekly sync, 1 hour','A weekly meeting with stakeholders. Ksenia presents the best ideas; each one is discussed for impact, effort and data risks.'],
+   ['4','The idea gets a status','After the sync Ksenia marks the card: 👀 in review, ✅ taken or 🅿️ parked. The author always sees where their idea stands.'],
+   ['5','Needs development — to the developers','If the idea needs development or integration, it goes to the developers for approval together with the impact estimate.'],
+   ['5','Existing tools are enough — we build it','If available AI tools can solve the task, AI enthusiasts build it themselves and post the result in #general.']
+  ]}
+};
+let lang='ru';
+try{const s=localStorage.getItem('aim-lang');if(s==='en'||s==='ru')lang=s}catch(e){}
+const edges=[[0,1],[1,2],[2,3],[3,4,'e1'],[3,5,'e2']];
+const bp=document.getElementById('bpmn'),svg=document.getElementById('wires'),play=document.getElementById('play');
+const nodes=[...document.querySelectorAll('.node')].sort((a,b)=>a.dataset.n-b.dataset.n);
 let cur=0,timer=null;
 function draw(){
   const B=bp.getBoundingClientRect();
-  let h='<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--line)"/></marker><marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker></defs>';
+  let h='<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="mk" d="M0 0L10 5L0 10z"/></marker><marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="mk on" d="M0 0L10 5L0 10z"/></marker></defs>';
   edges.forEach(([a,b,l])=>{
     const A=nodes[a].getBoundingClientRect(),C=nodes[b].getBoundingClientRect();
     const x1=A.right-B.left,y1=A.top+A.height/2-B.top,x2=C.left-B.left-2,y2=C.top+C.height/2-B.top;
-    const mx=Math.round(x1+(x2-x1)/2);
-    const on=b===cur||(a===cur-1&&b===cur);
-    const lit=(b===cur);
-    h+=`<path class="${lit?'on':''}" d="M${x1} ${y1}H${mx}V${y2}H${x2}" marker-end="url(#${lit?'aho':'ah'})"/>`;
-    if(l)h+=`<text x="${mx+4}" y="${y2-5}">${l}</text>`;
+    const mx=Math.round(x1+(x2-x1)/2),lit=b===cur;
+    h+=`<path class="w${lit?' on':''}" d="M${x1} ${y1}H${mx}V${y2}H${x2}" marker-end="url(#${lit?'aho':'ah'})"/>`;
+    if(l)h+=`<text x="${mx+5}" y="${y2-6}">${T[lang][l]}</text>`;
   });
   svg.innerHTML=h;
 }
 function select(i){
   cur=i;
   nodes.forEach((n,k)=>n.classList.toggle('on',k===i));
-  const s=steps[i];
-  document.getElementById('d-n').textContent=s.n;
-  document.getElementById('d-t').textContent=s.t;
-  document.getElementById('d-p').textContent=s.p;
+  const s=T[lang].steps[i];
+  document.getElementById('d-n').textContent=s[0];
+  document.getElementById('d-t').textContent=s[1];
+  document.getElementById('d-p').textContent=s[2];
   draw();
 }
-nodes.forEach(n=>n.addEventListener('click',()=>{stop();select(+n.dataset.i)}));
-function stop(){clearInterval(timer);timer=null;document.getElementById('play').textContent='▶ Проиграть процесс'}
-document.getElementById('play').addEventListener('click',()=>{
+function stop(){clearInterval(timer);timer=null;play.textContent=T[lang].play}
+function setLang(l){
+  lang=l;document.documentElement.lang=l;
+  try{localStorage.setItem('aim-lang',l)}catch(e){}
+  document.querySelectorAll('[data-i]').forEach(el=>{const v=T[l][el.dataset.i];if(v!==undefined)el.textContent=v});
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.l===l?'true':'false'));
+  play.textContent=timer?T[l].stop:T[l].play;
+  select(cur);
+}
+nodes.forEach(n=>n.addEventListener('click',()=>{stop();select(+n.dataset.n)}));
+play.addEventListener('click',()=>{
   if(timer){stop();return}
-  let i=0;select(0);document.getElementById('play').textContent='■ Стоп';
-  timer=setInterval(()=>{i++;if(i>=steps.length){stop();return}select(i)},2200);
+  let i=0;select(0);play.textContent=T[lang].stop;
+  timer=setInterval(()=>{i++;if(i>=nodes.length){stop();return}select(i)},2200);
 });
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.l)));
 document.querySelectorAll('.react').forEach(r=>r.addEventListener('click',()=>{
   document.querySelectorAll('.react').forEach(x=>x.setAttribute('aria-pressed',x===r?'true':'false'));
 }));
 addEventListener('resize',draw);
 if(document.fonts)document.fonts.ready.then(draw);
-select(0);
+setLang(lang);
 </script>
 </body>
 </html>
